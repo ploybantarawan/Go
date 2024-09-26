@@ -15,8 +15,8 @@ func main(){
 	// nameThree = "bowser"
 	// fmt.Println(nameOne, nameTwo, nameThree)
 
-	// nameFour := "yoshi"
-	// fmt.Println(nameFour)
+	nameFour := "yoshi"
+	fmt.Println(nameFour)
 
 	//ints
 	var ageOne int = 20
