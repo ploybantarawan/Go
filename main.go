@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"sort"
 	"strings"
 )
 
@@ -32,9 +33,23 @@ func main(){
 	// fmt.Println(stair(5))
 
 	//max Profits
-	prices := []int{7, 1, 5, 3, 9, 4}
-	fmt.Println(maxProfits(prices))
+	// prices := []int{7, 1, 5, 3, 9, 4}
+	// fmt.Println(maxProfits(prices))
 	
+	// anagram
+	// strs := []string{"eat", "tea", "tan", "ate", "nat", "bat"}
+    // fmt.Println(groupAnagrams(strs)) 
+
+	// Maximum Subarray
+	// nums := []int{-2, 1, -3, 4, -1, 2, 1, -5, 4, 8}
+    // fmt.Println(maxSubArray(nums))
+
+	// Container With Most Water
+	// height := []int{1, 8, 6, 2, 5, 4, 8, 3, 9}
+    // fmt.Println(maxArea(height))
+
+	s := "abcabcbb"
+	fmt.Println(longestS(s))
 	
 } 
 
@@ -190,8 +205,6 @@ func maxProfits(price []int) int {
 		return 0
 	}
 
-	fmt.Println(len(price))
-	
 	minPrice := price[0]
 	maxProfits := 0
 
@@ -207,4 +220,109 @@ func maxProfits(price []int) int {
 
 	}
 	return maxProfits
+}
+
+// Group Anagrams
+// Description: Given an array of strings, group the anagrams together.
+
+func groupAnagrams(strs []string) [][]string {
+	anagramMap := make(map[string][]string)
+
+	for _, str := range strs {
+		sortedStr := SortString(str)
+		anagramMap[sortedStr] = append(anagramMap[sortedStr], str)
+	}
+	
+	result := [][]string{} 
+	
+	for _, group := range anagramMap {
+		// fmt.Println(group)
+		result = append(result, group)
+	}
+
+	return result
+	
+}
+
+func SortString(s string) string {
+    strSlice := strings.Split(s,"")
+	sort.Strings(strSlice)
+	return strings.Join(strSlice, "")
+}
+
+// Problem: Maximum Subarray
+// Given an integer array nums, find the contiguous subarray (containing at least one number) 
+// that has the largest sum and return its sum.
+
+func maxSubArray(nums []int) int {
+	// Kadane's Algorithm
+
+	current := nums[0]
+	maxSum := nums[0]
+
+	for i := 1; i < len(nums); i++ {
+		current = findMax(nums[i], nums[i] + current)
+
+		if current > maxSum {
+			maxSum = current
+		}
+	}
+	return maxSum
+}
+
+func findMax(a,b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+// Container With Most Water
+// Description: Given n non-negative integers representing the height of lines on a chart, 
+// find two lines that together with the x-axis form a container that holds the most water.
+// The amount of water the container can hold is the minimum height between the two lines multiplied by the distance between them.
+
+func maxArea(height [] int) int {
+	left, right := 0, len(height)-1
+	maxArea := 0
+
+	for left < right {
+		area := min(height[left],height[right]) * (right - left)
+
+		if area > maxArea {
+			maxArea = area
+		}
+
+		if height[left] < height[right]{
+			left++
+		} else {
+			right--
+		}
+	}
+	return maxArea
+}
+
+// Longest Substring Without Repeating Characters
+// Given a string s, find the length of the longest substring without repeating characters.
+
+func longestS(s string) int {
+	//Sliding Window
+	charMap := make(map[byte]int)
+
+	left, maxLength := 0, 0
+
+	for right := 0; right < len(s); right++{
+		// if match, update left pointer
+		if index, found := charMap[s[right]]; index >= left && found {
+			left = index + 1
+		}
+		// if not match, update char in map
+		charMap[s[right]] = right
+
+		currentLength := right - left +1
+		if currentLength > maxLength {
+			maxLength = currentLength
+		}
+	}
+	return maxLength
 }
