@@ -473,3 +473,8 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 
 	return root
 }
+
+// Problem Description
+// You are given a number of courses and a list of prerequisite pairs. Each prerequisite pair indicates that one course must be completed before another.
+// The task is to determine if it is possible to finish all courses given the prerequisites.
+
